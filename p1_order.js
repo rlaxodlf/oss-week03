@@ -41,7 +41,7 @@ sleep(10).then(() => console.log("F"));
 
 console.log("G");
 
-// prediction:
-// actual:
-// why I was wrong (one line per miss):
+// prediction: A D C G F E B
+// actual:     A D G C F E B
+// why I was wrong (one line per miss): C의 지연시간이 0인 것을 보고 백그라운드로 가는 것까지는 예상했지만 지연시간이 0이기 때문에 G보다는 빨리 실행될 것이라고 생각했다.
 //
