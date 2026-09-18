@@ -32,6 +32,7 @@
 // 커밋 메시지: p4: compare cities
 
 import { geocode, forecast } from "./p3_weather.js";
+import chalk from "chalk";
 
 const names = process.argv.slice(2);
 if (names.length === 0) {
@@ -44,6 +45,14 @@ if (names.length === 0) {
 //   2. const results = await Promise.allSettled(...)
 //   3. fulfilled / rejected 로 나눔
 //   4. max 내림차순 정렬 → `${i + 1}. ${city.padEnd(8)} ${max.toFixed(1)}` → 실패는 `✗ ${name}: ${message}`
+
+function paintMax(max) {
+  const s = max.toFixed(1);
+  if (max >= 30) return chalk.red(s);
+  if (max < 10) return chalk.blue(s);
+  return s;
+}
+
 const jobs = names.map(async (name) => {
   const coordi = await geocode(name);
   const forecast_data = await forecast(coordi);
@@ -62,7 +71,7 @@ const fail = results
 .filter((d)=>d.r.status === "rejected");
 
 success.forEach((row, i) => {
-  console.log(`${i + 1}. ${row.city.padEnd(8)} ${row.max.toFixed(1)}`);
+  console.log(`${i + 1}. ${row.city.padEnd(8)} ${paintMax(row.max)}`);
 });
 
 for (const { r, name } of fail) {
